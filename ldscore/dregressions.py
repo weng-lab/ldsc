@@ -154,6 +154,7 @@ class LD_Score_Regression(object):
         if M.shape != (1, self.n_annot):
             raise ValueError('M must have shape (1, n_annot).')
 
+        print(M)
         M_tot = float(np.sum(M))
         x_tot = np.sum(x, axis=1).reshape((n_snp, 1))
         self.constrain_intercept = intercept is not None

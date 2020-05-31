@@ -12,7 +12,7 @@ from __future__ import division
 import ldscore.ldscore as ld
 import ldscore.parse as ps
 import ldscore.sumstats as sumstats
-import ldscore.regressions as reg
+import ldscore.dregressions as reg
 import numpy as np
 import pandas as pd
 from subprocess import call
@@ -80,8 +80,8 @@ class Logger(object):
         Print to log file and stdout with a single command.
 
         '''
-        print >>self.log_fh, msg
-        print msg
+        # print >>self.log_fh, msg
+        print(msg)
 
 
 def __filter__(fname, noun, verb, merge_obj):
@@ -90,12 +90,12 @@ def __filter__(fname, noun, verb, merge_obj):
         f = lambda x,n: x.format(noun=noun, verb=verb, fname=fname, num=n)
         x = ps.FilterFile(fname)
         c = 'Read list of {num} {noun} to {verb} from {fname}'
-        print f(c, len(x.IDList))
+        print(f(c, len(x.IDList)))
         merged_list = merge_obj.loj(x.IDList)
         len_merged_list = len(merged_list)
         if len_merged_list > 0:
             c = 'After merging, {num} {noun} remain'
-            print f(c, len_merged_list)
+            print(f(c, len_merged_list))
         else:
             error_msg = 'No {noun} retained for analysis'
             raise ValueError(f(error_msg, 0))
@@ -361,12 +361,12 @@ def ldscore(args, log):
 
     # print .M
     fout_M = open(args.out + '.'+ file_suffix +'.M','wb')
-    print >>fout_M, '\t'.join(map(str,M))
+    fout_M.write('\t'.join(map(str,M)))
     fout_M.close()
 
     # print .M_5_50
     fout_M_5_50 = open(args.out + '.'+ file_suffix +'.M_5_50','wb')
-    print >>fout_M_5_50, '\t'.join(map(str,M_5_50))
+    fout_M_5_50.write('\t'.join(map(str,M_5_50)))
     fout_M_5_50.close()
 
     # print annot matrix
@@ -647,9 +647,9 @@ if __name__ == '__main__':
 
             # bad flags
         else:
-            print header
-            print 'Error: no analysis selected.'
-            print 'ldsc.py -h describes options.'
+            print(header)
+            print('Error: no analysis selected.')
+            print('ldsc.py -h describes options.')
     except Exception:
         ex_type, ex, tb = sys.exc_info()
         log.log( traceback.format_exc(ex) )

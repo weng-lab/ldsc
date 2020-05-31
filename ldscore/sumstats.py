@@ -6,18 +6,21 @@ into memory and checking that the input makes sense. There is no math here. LD S
 regression is implemented in the regressions module.
 
 '''
+
 from __future__ import division
 import numpy as np
 import pandas as pd
 from scipy import stats
 import itertools as it
-import parse as ps
-import regressions as reg
 import sys
 import traceback
 import copy
 import os
 import glob
+
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__))))
+import parse as ps
+from dregressions import *
 
 
 _N_CHR = 22
@@ -298,7 +301,7 @@ def cell_type_specific(args, log):
         M_cts = ps.M_fromlist(
                 _splitp(ct_ld_chr), _N_CHR, common=(not args.not_M_5_50))
         M_annot = np.hstack([M_cts, M_annot_all_regr])
-        hsqhat = reg.Hsq(s(chisq), ref_ld, s(sumstats[w_ld_cname]), s(sumstats.N),
+        hsqhat = Hsq(s(chisq), ref_ld, s(sumstats[w_ld_cname]), s(sumstats.N),
                      M_annot, n_blocks=n_blocks, intercept=args.intercept_h2,
                      twostep=None, old_weights=True)
         coef, coef_se = hsqhat.coef[0], hsqhat.coef_se[0]
@@ -357,7 +360,7 @@ def estimate_h2(args, log):
     if args.two_step is not None:
         log.log('Using two-step estimator with cutoff at {M}.'.format(M=args.two_step))
 
-    hsqhat = reg.Hsq(chisq, ref_ld, s(sumstats[w_ld_cname]), s(sumstats.N),
+    hsqhat = Hsq(chisq, ref_ld, s(sumstats[w_ld_cname]), s(sumstats.N),
                      M_annot, n_blocks=n_blocks, intercept=args.intercept_h2,
                      twostep=args.two_step, old_weights=old_weights)
 
@@ -463,7 +466,7 @@ def _get_rg_table(rg_paths, RG, args):
             all((i is not None for i in args.samp_prev)) and \
             all((i is not None for it in args.pop_prev)):
 
-        c = map(lambda x, y: reg.h2_obs_to_liab(1, x, y), args.samp_prev[1:], args.pop_prev[1:])
+        c = map(lambda x, y: h2_obs_to_liab(1, x, y), args.samp_prev[1:], args.pop_prev[1:])
         x['h2_liab'] = map(lambda x, y: x * y, c, map(t('tot'), map(t('hsq2'), RG)))
         x['h2_liab_se'] = map(lambda x, y: x * y, c, map(t('tot_se'), map(t('hsq2'), RG)))
     else:
@@ -535,7 +538,7 @@ def _rg(sumstats, args, log, M_annot, ref_ld_cnames, w_ld_cname, i):
     ref_ld = sumstats.as_matrix(columns=ref_ld_cnames)
     intercepts = [args.intercept_h2[0], args.intercept_h2[
         i + 1], args.intercept_gencov[i + 1]]
-    rghat = reg.RG(s(sumstats.Z1), s(sumstats.Z2),
+    rghat = RG(s(sumstats.Z1), s(sumstats.Z2),
                    ref_ld, s(sumstats[w_ld_cname]), s(
                        sumstats.N1), s(sumstats.N2), M_annot,
                    intercept_hsq1=intercepts[0], intercept_hsq2=intercepts[1],
