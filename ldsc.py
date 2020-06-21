@@ -17,6 +17,7 @@ import numpy as np
 import pandas as pd
 from subprocess import call
 from itertools import product
+from functools import *
 import time, sys, traceback, argparse
 
 
