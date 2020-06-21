@@ -56,7 +56,7 @@ def _splitp(fstr):
     flist = fstr.split(',')
     paths = []
     for x in [os.path.expanduser(os.path.expandvars(x)) for x in flist]:
-      paths.extend(x)
+      paths.append(x)
     return paths
 
 
@@ -195,7 +195,7 @@ def _check_ld_condnum(args, log, ref_ld):
 
 def _check_variance(log, M_annot, ref_ld):
     '''Remove zero-variance LD Scores.'''
-    ii = ref_ld.loc[:, 1:].var() == 0  # NB there is a SNP column here
+    ii = ref_ld.iloc[:, 1:].var() == 0  # NB there is a SNP column here
     if ii.all():
         raise ValueError('All LD Scores have zero variance.')
     else:
@@ -293,7 +293,7 @@ def cell_type_specific(args, log):
         ref_ld_cts_allsnps = _read_chr_split_files(ct_ld_chr, None, log,
                                    'cts reference panel LD Score', ps.ldscore_fromlist)
         log.log('Performing regression.')
-        ref_ld_cts = np.array(pd.merge(keep_snps, ref_ld_cts_allsnps, on='SNP', how='left').loc[:,1:])
+        ref_ld_cts = np.array(pd.merge(keep_snps, ref_ld_cts_allsnps, on='SNP', how='left').iloc[:,1:])
         if np.any(np.isnan(ref_ld_cts)):
             raise ValueError ('Missing some LD scores from cts files. Are you sure all SNPs in ref-ld-chr are also in ref-ld-chr-cts')
 
