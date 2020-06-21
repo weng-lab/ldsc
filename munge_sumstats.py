@@ -144,7 +144,7 @@ def get_cname_map(flag, default, ignore):
     clean_ignore = [clean_header(x) for x in ignore]
     cname_map = {x: flag[x] for x in flag if x not in clean_ignore}
     cname_map.update(
-        {x: default[x] for x in default if x not in clean_ignore + flag.keys()})
+        {x: default[x] for x in default if x not in clean_ignore + list(flag.keys())})
     return cname_map
 
 
@@ -634,7 +634,7 @@ def munge_sumstats(args, p=True):
 
         # check multiple different column names don't map to same data field
         for head in cname_translation.values():
-            numc = cname_translation.values().count(head)
+            numc = list(cname_translation.values()).count(head)
             if numc > 1:
                 raise ValueError('Found {num} different {C} columns'.format(C=head,num=str(numc)))
 
