@@ -74,7 +74,7 @@ class Logger(object):
 
     '''
     def __init__(self, fh):
-        self.log_fh = open(fh, 'wb')
+        self.log_fh = open(fh, 'wt')
 
     def log(self, msg):
         '''
@@ -361,12 +361,12 @@ def ldscore(args, log):
         M_5_50 = [np.sum(geno_array.maf > 0.05)]
 
     # print .M
-    fout_M = open(args.out + '.'+ file_suffix +'.M','wb')
+    fout_M = open(args.out + '.'+ file_suffix +'.M','wt')
     fout_M.write('\t'.join(map(str,M)))
     fout_M.close()
 
     # print .M_5_50
-    fout_M_5_50 = open(args.out + '.'+ file_suffix +'.M_5_50','wb')
+    fout_M_5_50 = open(args.out + '.'+ file_suffix +'.M_5_50','wt')
     fout_M_5_50.write('\t'.join(map(str,M_5_50)))
     fout_M_5_50.close()
 
@@ -383,20 +383,20 @@ def ldscore(args, log):
 
     # print LD Score summary
     pd.set_option('display.max_rows', 200)
-    log.log('\nSummary of LD Scores in {F}'.format(F=out_fname+l2_suffix))
-    t = df.loc[:,4:].describe()
-    log.log( t.loc[1:,:] )
+    # log.log('\nSummary of LD Scores in {F}'.format(F=out_fname+l2_suffix))
+    t = df.iloc[:,4:].describe()
+    # log.log( t.loc[1:,:] )
 
     np.seterr(divide='ignore', invalid='ignore')  # print NaN instead of weird errors
     # print correlation matrix including all LD Scores and sample MAF
-    log.log('')
-    log.log('MAF/LD Score Correlation Matrix')
-    log.log( df.loc[:,4:].corr() )
+    # log.log('')
+    # log.log('MAF/LD Score Correlation Matrix')
+    # log.log( df.loc[:,4:].corr() )
 
     # print condition number
     if n_annot > 1: # condition number of a column vector w/ nonzero var is trivially one
         log.log('\nLD Score Matrix Condition Number')
-        cond_num = np.linalg.cond(df.loc[:,5:])
+        cond_num = np.linalg.cond(df.iloc[:,5:])
         log.log( reg.remove_brackets(str(np.matrix(cond_num))) )
         if cond_num > 10000:
             log.log('WARNING: ill-conditioned LD Score Matrix!')
