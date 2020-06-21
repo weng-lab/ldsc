@@ -51,7 +51,7 @@ def test_check_variance():
     M_annot, ld, novar_col = s._check_variance(log, M_annot, ld)
     assert_array_equal(M_annot.shape, (1, 1))
     assert_array_equal(M_annot, [[2]])
-    assert_allclose(ld.iloc[:, 1], [0, 1, 2])
+    assert_allclose(ld.loc[:, 1], [0, 1, 2])
     assert_array_equal(novar_col, [True, False])
 
 

@@ -20,12 +20,12 @@ def print_ld(x, fh, M):
     print >>open(fh + m, 'wb'), '\t'.join(map(str, M))
 
     # chr1
-    y = x.iloc[0:int(len(x) / 2), ]
+    y = x.loc[0:int(len(x) / 2), ]
     y.to_csv(fh + '1' + l2, sep='\t', index=False, float_format='%.3f')
     print >>open(fh + '1' + m, 'wb'), '\t'.join((str(x / 2) for x in M))
 
     # chr2
-    y = x.iloc[int(len(x) / 2):len(x), ]
+    y = x.loc[int(len(x) / 2):len(x), ]
     y.to_csv(fh + '2' + l2, sep='\t', index=False, float_format='%.3f')
     print >>open(fh + '2' + m, 'wb'), '\t'.join((str(x / 2) for x in M))
 
