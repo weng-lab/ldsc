@@ -257,7 +257,7 @@ def __ID_List_Factory__(colnames, keepcol, fname_end, header=None, usecols=None)
                 self.df.columns = self.__colnames__
 
             if self.__keepcol__ is not None:
-                self.IDList = self.df.loc[:, [self.__keepcol__]].astype('object')
+                self.IDList = self.df.iloc[:, [self.__keepcol__]].astype('object')
 
         def loj(self, externalDf):
             '''Returns indices of those elements of self.IDList that appear in exernalDf.'''

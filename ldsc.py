@@ -151,7 +151,7 @@ def ldscore(args, log):
                 n_annot, ma = len(annot.df.columns) - 4, len(annot.df)
                 log.log("Read {A} annotations for {M} SNPs from {f}".format(f=args.annot,
                     A=n_annot, M=ma))
-                annot_matrix = np.array(annot.df.loc[:,4:])
+                annot_matrix = np.array(annot.df.iloc[:,4:])
                 annot_colnames = annot.df.columns[4:]
                 keep_snps = None
                 if np.any(annot.df.SNP.values != array_snps.df.SNP.values):
