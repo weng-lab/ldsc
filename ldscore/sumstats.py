@@ -56,7 +56,7 @@ def _splitp(fstr):
     flist = fstr.split(',')
     paths = []
     for x in [os.path.expanduser(os.path.expandvars(x)) for x in flist]:
-      paths.extend(glob.glob(x))
+      paths.extend(x)
     return paths
 
 
